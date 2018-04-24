@@ -16,7 +16,12 @@
 
 package sample.data.jpa.web;
 
-import sample.data.jpa.service.CityService;
+import org.springframework.web.bind.annotation.PathVariable;
+import sample.data.jpa.domain.City;
+import sample.data.jpa.domain.Hotel;
+import sample.data.jpa.domain.Review;
+import sample.data.jpa.domain.ReviewResponse;
+import sample.data.jpa.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,17 +29,48 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 public class SampleController {
 
 	@Autowired
 	private CityService cityService;
 
-	@GetMapping("/")
+	@Autowired
+	private CityRepository cityRepository;
+
+	@Autowired
+	private ReviewRepository reviewRepository;
+
+
+	@Autowired
+	private HotelRepository hotelRepository;
+
+	@Autowired
+	private ReviewService reviewService;
+
+	@GetMapping("/cities")
 	@ResponseBody
 	@Transactional(readOnly = true)
-	public String helloWorld() {
-		return this.cityService.getCity("Bath", "UK").getName();
+	public List<City> getCities() {
+		//return this.cityService.getCity("Bath", "UK");
+		return cityRepository.findAll();
 	}
+
+	@GetMapping("/hotels")
+	@ResponseBody
+	@Transactional(readOnly = true)
+	public List<Hotel> getHotels() {
+		return hotelRepository.findAll();
+	}
+
+	@GetMapping("/reviews/{hotelId}")
+	@ResponseBody
+	@Transactional(readOnly = true)
+	public List<ReviewResponse> getReviews(@PathVariable("hotelId") long id ) {
+		return reviewService.findByHotelId(id);
+	}
+
 
 }

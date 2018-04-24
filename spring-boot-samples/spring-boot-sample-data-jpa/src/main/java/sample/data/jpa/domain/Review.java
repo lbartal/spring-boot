@@ -66,6 +66,11 @@ public class Review implements Serializable {
 	@Column(nullable = false, length = 5000)
 	private String details;
 
+	@Column(name = "quote_id")
+	private String quoteId;
+
+
+
 	protected Review() {
 	}
 
@@ -128,5 +133,6 @@ public class Review implements Serializable {
 	public void setDetails(String details) {
 		this.details = details;
 	}
-
+	public String getQuoteId() {return this.quoteId;	}
+	public long getId() {return this.id;	}
 }

@@ -19,16 +19,7 @@ package sample.data.jpa.domain;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import org.springframework.util.Assert;
 
@@ -38,8 +29,7 @@ public class Review implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "review_generator", sequenceName = "review_sequence", initialValue = 64)
-	@GeneratedValue(generator = "review_generator")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(optional = false)
@@ -77,6 +67,7 @@ public class Review implements Serializable {
 	public Review(Hotel hotel, int index, ReviewDetails details) {
 		Assert.notNull(hotel, "Hotel must not be null");
 		Assert.notNull(details, "Details must not be null");
+		//this.id = id;
 		this.hotel = hotel;
 		this.index = index;
 		this.rating = details.getRating();
@@ -84,6 +75,7 @@ public class Review implements Serializable {
 		this.tripType = details.getTripType();
 		this.title = details.getTitle();
 		this.details = details.getDetails();
+		this.quoteId = details.getQuoteId();
 	}
 
 	public Hotel getHotel() {
@@ -133,6 +125,15 @@ public class Review implements Serializable {
 	public void setDetails(String details) {
 		this.details = details;
 	}
+
 	public String getQuoteId() {return this.quoteId;	}
-	public long getId() {return this.id;	}
+
+	public void setQuoteId(String quoteId){
+		this.quoteId = quoteId;
+	}
+
+	public Long getId() {return this.id;	}
+//	public void setId(Long id){
+//		this.id = id;
+//	}
 }

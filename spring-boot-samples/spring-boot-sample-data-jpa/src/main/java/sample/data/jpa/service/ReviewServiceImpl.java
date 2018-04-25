@@ -58,7 +58,9 @@ class ReviewServiceImpl implements ReviewService {
 				response.setTitle(review.getTitle());
 				response.setTripType(review.getTripType());
 				response.setId(review.getId());
-				response.setQuote(new QuoteClient().getRandomQuote());
+				if (review.getQuoteId() == null)
+					response.setQuote(new QuoteClient().getRandomQuote());
+				else response.setQuote((new QuoteClient().getQuoteById(review.getQuoteId())));
 				reviewList.add(response);
 			}
 		);

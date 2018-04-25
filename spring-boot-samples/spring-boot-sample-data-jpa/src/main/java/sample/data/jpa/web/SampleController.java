@@ -16,18 +16,15 @@
 
 package sample.data.jpa.web;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import sample.data.jpa.domain.City;
-import sample.data.jpa.domain.Hotel;
-import sample.data.jpa.domain.Review;
-import sample.data.jpa.domain.ReviewResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import sample.data.jpa.domain.*;
 import sample.data.jpa.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -36,6 +33,10 @@ public class SampleController {
 
 	@Autowired
 	private CityService cityService;
+
+	@Autowired
+	private HotelService hotelService;
+
 
 	@Autowired
 	private CityRepository cityRepository;
@@ -65,12 +66,21 @@ public class SampleController {
 		return hotelRepository.findAll();
 	}
 
-	@GetMapping("/reviews/{hotelId}")
+	@GetMapping("/reviews/hotel/{hotelId}")
 	@ResponseBody
 	@Transactional(readOnly = true)
 	public List<ReviewResponse> getReviews(@PathVariable("hotelId") long id ) {
 		return reviewService.findByHotelId(id);
 	}
 
+	@PostMapping("/reviews/hotel/{hotelId}")
+	@ResponseBody
+	@Transactional
+	public ResponseEntity addReview(@PathVariable("hotelId") long id, @RequestBody ReviewDetails reviewDetails) {
+		hotelService.addReview(
+				hotelRepository.findById(id),
+				reviewDetails);
+		return new ResponseEntity(HttpStatus.ACCEPTED);
+	}
 
 }

@@ -32,6 +32,8 @@ public interface HotelRepository extends Repository<Hotel, Long> {
 
 	Hotel findByCityAndName(City city, String name);
 
+	Hotel findById(long id);
+
 	List<Hotel> findAll();
 
 	@Query("select h.city as city, h.name as name, avg(r.rating) as averageRating "

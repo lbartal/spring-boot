@@ -6,7 +6,7 @@ public class Quote {
 	String type;
 	Value value;
 
-	class Value {
+	public class Value {
 		long id;
 		String quote;
 

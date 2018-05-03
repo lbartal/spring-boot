@@ -16,14 +16,9 @@
 
 package sample.data.jpa.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-import sample.data.jpa.domain.City;
-import sample.data.jpa.domain.HotelSummary;
 import sample.data.jpa.domain.ReviewResponse;
 
 import java.util.ArrayList;
@@ -35,11 +30,15 @@ class ReviewServiceImpl implements ReviewService {
 
 	private final ReviewRepository reviewRepository;
 
+	@Autowired
+	private final QuoteClient quoteClient;
+
 	private final HotelRepository hotelRepository;
 
 	public ReviewServiceImpl(ReviewRepository reviewRepository,
-							 HotelRepository hotelRepository) {
+							 QuoteClient quoteClient, HotelRepository hotelRepository) {
 		this.reviewRepository = reviewRepository;
+		this.quoteClient = quoteClient;
 		this.hotelRepository = hotelRepository;
 	}
 
@@ -59,8 +58,8 @@ class ReviewServiceImpl implements ReviewService {
 				response.setTripType(review.getTripType());
 				response.setId(review.getId());
 				if (review.getQuoteId() == null)
-					response.setQuote(new QuoteClient().getRandomQuote());
-				else response.setQuote((new QuoteClient().getQuoteById(review.getQuoteId())));
+					response.setQuote(quoteClient.getRandomQuote());
+				else response.setQuote((quoteClient.getQuoteById(review.getQuoteId())));
 				reviewList.add(response);
 			}
 		);

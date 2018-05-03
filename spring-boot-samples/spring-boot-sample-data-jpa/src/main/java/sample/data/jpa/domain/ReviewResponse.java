@@ -1,26 +1,19 @@
 package sample.data.jpa.domain;
 
-import javax.persistence.*;
 import java.util.Date;
 
 public class ReviewResponse {
 	private Long id;
-
 	private Hotel hotel;
-
 	private int index;
-
 	private Rating rating;
-
 	private Date checkInDate;
-
 	private TripType tripType;
-
 	private String title;
-
 	private String details;
-
 	private String quoteId;
+
+
 
 	public Quote getQuote() {
 		return quote;

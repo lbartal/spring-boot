@@ -1,11 +1,13 @@
 package sample.data.jpa.service;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import sample.data.jpa.domain.Quote;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Component("quoteClient")
 public class QuoteClient {
 
 	private static String quoteApiUrl = "http://gturnquist-quoters.cfapps.io/api";

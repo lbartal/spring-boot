@@ -1,1 +1,54 @@
-= This is a readme
+= Integration test guide
+
+This test sample is created for purpose to demonstrate implementing integration test layer of the test pyramid.
+
+The sample application is a standalone service which also use an external service (service2service dependency) through client `sample.data.jpa.service.QuoteClient`
+
+3 types of integration tests defined:
+
+* external
+* component
+* end2end
+
+== External
+
+*Purpose:* we test the external service through client, this ensures 
+
+* external service is working and 
+* contract is not harmed (contract is defined only as pojo representation, contract failures break test at deserialization of external service response)
+* decoupling this test type from end2end results better granulirity and faster troubleshooting.
+* might be reused for monitoring purposes as well
+
+*Package:* `sample.data.jpa.integration.external`
+
+== Component
+
+*Purpose:* we test our service 
+
+* on its public API, checking one operation in one test usually
+* with the capability to use its internal components (models, data repositories, service)
+* mocking external dependency
+
+This ensures
+
+* We can create conditions like test data which is hard/slow/complex to do in real environment
+* We test our service in isolation, w/o generating e.g. network traffic
+* We focus on the PRODUCT, not on the code, still can run our functional tests in seconds like unit tests.
+* Best place to factor in requirement based edge case tests and error conditions
+
+*Package:* `sample.data.jpa.integration.component`
+
+== End2End
+
+*Purpose:* we test our service
+
+* on its public API, checking a user flow/behaviour/journey usually utilizing more operations from the public API
+* without using the service internal components, we use only public API
+* utilizing the external dependencies, no mocking allowed.
+* end2end tests are usually written in a way to be able to be executed against deployed applications in more environments. (for simplicity reason this is not the complete case in this example, we reuse now the component test base)
+
+This ensures
+
+* Full integration focusing on stories and journeys rather than one operation tricky cases.
+
+*Package:* `sample.data.jpa.integration.end2end`

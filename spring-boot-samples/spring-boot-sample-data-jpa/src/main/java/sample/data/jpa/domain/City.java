@@ -16,13 +16,9 @@
 
 package sample.data.jpa.domain;
 
+import javax.persistence.*;
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import java.util.Objects;
 
 @Entity
 public class City implements Serializable {
@@ -75,4 +71,21 @@ public class City implements Serializable {
 		return getName() + "," + getState() + "," + getCountry();
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		City city = (City) o;
+		return Objects.equals(id, city.id) &&
+				Objects.equals(name, city.name) &&
+				Objects.equals(state, city.state) &&
+				Objects.equals(country, city.country) &&
+				Objects.equals(map, city.map);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(id, name, state, country, map);
+	}
 }

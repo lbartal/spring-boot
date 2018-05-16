@@ -16,24 +16,17 @@
 
 package sample.data.jpa.service;
 
-import sample.data.jpa.domain.Hotel;
-import sample.data.jpa.domain.Review;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.Repository;
+import sample.data.jpa.domain.City;
+import sample.data.jpa.domain.HotelSummary;
+import sample.data.jpa.domain.Review;
+import sample.data.jpa.domain.ReviewResponse;
 
 import java.util.List;
 
-public interface ReviewRepository extends Repository<Review, Long> {
+public interface ReviewService {
 
-	Page<Review> findByHotel(Hotel hotel, Pageable pageable);
-
-	Review findByHotelAndIndex(Hotel hotel, int index);
-	Review findByHotel(Hotel hotel);
-
-	List<Review> findByHotelId(long hotelId);
-
-	Review save(Review review);
+	List<ReviewResponse> findByHotelId(long hotelId);
 
 }

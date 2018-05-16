@@ -16,19 +16,12 @@
 
 package sample.data.jpa.domain;
 
-import java.io.Serializable;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-
 import org.hibernate.annotations.NaturalId;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Hotel implements Serializable {
@@ -65,6 +58,10 @@ public class Hotel implements Serializable {
 		this.name = name;
 	}
 
+	public Long getId() {
+		return this.id;
+	}
+
 	public City getCity() {
 		return this.city;
 	}
@@ -80,5 +77,25 @@ public class Hotel implements Serializable {
 	public String getZip() {
 		return this.zip;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Hotel hotel = (Hotel) o;
+		return Objects.equals(id, hotel.id) &&
+				Objects.equals(city, hotel.city) &&
+				Objects.equals(name, hotel.name) &&
+				Objects.equals(address, hotel.address) &&
+				Objects.equals(zip, hotel.zip) &&
+				Objects.equals(reviews, hotel.reviews);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(id, city, name, address, zip, reviews);
+	}
+
 
 }

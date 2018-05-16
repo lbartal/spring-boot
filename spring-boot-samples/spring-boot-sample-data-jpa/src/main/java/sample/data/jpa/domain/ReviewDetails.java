@@ -33,7 +33,18 @@ public class ReviewDetails implements Serializable {
 
 	private String details;
 
+	private String quoteId;
+
+
 	public ReviewDetails() {
+	}
+
+	public String getQuoteId() {
+		return quoteId;
+	}
+
+	public void setQuoteId(String quoteId) {
+		this.quoteId = quoteId;
 	}
 
 	public Rating getRating() {

@@ -16,13 +16,17 @@
 
 package sample.data.jpa.web;
 
-import sample.data.jpa.service.CityService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import sample.data.jpa.domain.*;
+import sample.data.jpa.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 public class SampleController {
@@ -30,11 +34,53 @@ public class SampleController {
 	@Autowired
 	private CityService cityService;
 
-	@GetMapping("/")
+	@Autowired
+	private HotelService hotelService;
+
+
+	@Autowired
+	private CityRepository cityRepository;
+
+	@Autowired
+	private ReviewRepository reviewRepository;
+
+
+	@Autowired
+	private HotelRepository hotelRepository;
+
+	@Autowired
+	private ReviewService reviewService;
+
+	@GetMapping("/cities")
 	@ResponseBody
 	@Transactional(readOnly = true)
-	public String helloWorld() {
-		return this.cityService.getCity("Bath", "UK").getName();
+	public List<City> getCities() {
+		//return this.cityService.getCity("Bath", "UK");
+		return cityRepository.findAll();
+	}
+
+	@GetMapping("/hotels")
+	@ResponseBody
+	@Transactional(readOnly = true)
+	public List<Hotel> getHotels() {
+		return hotelRepository.findAll();
+	}
+
+	@GetMapping("/reviews/hotel/{hotelId}")
+	@ResponseBody
+	@Transactional(readOnly = true)
+	public List<ReviewResponse> getReviews(@PathVariable("hotelId") long id ) {
+		return reviewService.findByHotelId(id);
+	}
+
+	@PostMapping("/reviews/hotel/{hotelId}")
+	@ResponseBody
+	@Transactional
+	public ResponseEntity addReview(@PathVariable("hotelId") long id, @RequestBody ReviewDetails reviewDetails) {
+		hotelService.addReview(
+				hotelRepository.findById(id),
+				reviewDetails);
+		return new ResponseEntity(HttpStatus.ACCEPTED);
 	}
 
 }
